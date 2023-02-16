@@ -2,14 +2,20 @@ package com.example.aws.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.example.aws.dto.AWSS3File;
-import com.example.aws.dto.AwsS3Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,13 +70,23 @@ public class AWSS3Controller {
     }
 
 
-    
+
     @GetMapping("/download/{bucketName}")
-    public List<AWSS3File> downloadS3File( @RequestParam String key,
-                                           @PathVariable String bucketName){
+    public ResponseEntity<Resource> downloadS3File(@RequestParam String key,
+                                                   @PathVariable String bucketName){
 
-        // TODO: implement S3 get files in {bucketName} based on filter
+        S3Object s3object = s3client.getObject(bucketName, key);
+        S3ObjectInputStream inputStream = s3object.getObjectContent();
 
-        return Collections.emptyList();
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+        String[] s = key.split("/");
+        String fileName = s[s.length-1];
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentLength(s3object.getObjectMetadata().getContentLength())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
