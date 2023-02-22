@@ -12,7 +12,7 @@ services:
       - PORT_WEB_UI=8082
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
-      - AWS_DEFAULT_REGION=ap-south-1
+      - AWS_DEFAULT_REGION=us-east-1
       - AWS_SECRET_ACCESS_KEY=oFJXVjVvlBRPTeTbYspdGaeVUD8S6OfP0dZdilCD
       - AWS_ACCESS_KEY_ID=AKIAQ3JUWAXV2C246P6O
     volumes:
