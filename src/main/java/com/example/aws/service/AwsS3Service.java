@@ -23,7 +23,7 @@ public class AwsS3Service {
     @Autowired
     private AmazonS3 s3client;
 
-    public static final String DOWNLOAD_LINK = "http://localhost:8080//download/";
+    public static final String DOWNLOAD_LINK = "http://localhost:8080/s3/download/";
 
 
     public List<AWSS3File> getBucketFiles(String bucketName, Date lastModifiedFilter) {
