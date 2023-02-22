@@ -10,4 +10,5 @@ public class AWSS3File {
     String bucket;
     long size;
     String eTag;
+    String downloadLink;
 }

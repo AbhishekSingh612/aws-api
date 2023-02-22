@@ -23,6 +23,8 @@ public class AwsS3Service {
     @Autowired
     private AmazonS3 s3client;
 
+    public static final String DOWNLOAD_LINK = "http://localhost:8080//download/";
+
 
     public List<AWSS3File> getBucketFiles(String bucketName, Date lastModifiedFilter) {
 
@@ -37,11 +39,13 @@ public class AwsS3Service {
             log.debug("Object Summary : {}",objectSummary);
             if (lastModifiedFilter==null || (lastModifiedFilter.equals(lastModified))) {
 
+                String key = objectSummary.getKey();
                 AWSS3File file = AWSS3File.builder()
-                        .key(objectSummary.getKey())
-                        .bucket(objectSummary.getBucketName())
+                        .key(key)
+                        .bucket(bucketName)
                         .size(objectSummary.getSize())
                         .eTag(objectSummary.getETag())
+                        .downloadLink(DOWNLOAD_LINK + bucketName +"?key="+ key)
                         .build();
                 awss3Files.add(file);
             }
@@ -51,7 +55,6 @@ public class AwsS3Service {
     }
 
     public S3Object getS3Object(String key, String bucketName) {
-        S3Object s3object = s3client.getObject(bucketName, key);
-        return s3object;
+        return s3client.getObject(bucketName, key);
     }
 }
