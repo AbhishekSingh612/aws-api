@@ -13,8 +13,8 @@ services:
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
       - AWS_DEFAULT_REGION=us-east-1
-      - AWS_SECRET_ACCESS_KEY=oFJXVjVvlBRPTeTbYspdGaeVUD8S6OfP0dZdilCD
-      - AWS_ACCESS_KEY_ID=AKIAQ3JUWAXV2C246P6O
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ACCESS_KEY_ID=dummy
     volumes:
       - './.localstack:/tmp/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
